@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BYPASS 24/7</title>
+<meta name="theme-color" content="#05070f">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#05070f;
+    --card:rgba(18,24,48,.55);
+    --card-border:rgba(120,150,255,.14);
+    --chip:rgba(255,255,255,.04);
+    --chip-border:rgba(255,255,255,.08);
+    --text:#eef2ff;
+    --muted:#8b94b8;
+    --a1:#7c3aed;   /* tím */
+    --a2:#22d3ee;   /* cyan */
+    --a3:#3b82f6;   /* xanh */
+    --ok:#34d399;
+    --err:#f87171;
+    --grad:linear-gradient(135deg,var(--a1),var(--a3) 55%,var(--a2));
+  }
+  *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+  html,body{min-height:100%}
+  body{
+    font-family:"Be Vietnam Pro",system-ui,sans-serif;
+    background:var(--bg);color:var(--text);
+    overflow-x:hidden;
+  }
+
+  /* ---------- Nền động ---------- */
+  .bg{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
+  .blob{position:absolute;border-radius:50%;filter:blur(80px);opacity:.45;animation:float 18s ease-in-out infinite}
+  .b1{width:420px;height:420px;background:var(--a1);top:-120px;left:-120px}
+  .b2{width:380px;height:380px;background:var(--a2);bottom:-140px;right:-120px;animation-delay:-6s}
+  .b3{width:300px;height:300px;background:var(--a3);top:40%;left:55%;animation-delay:-12s;opacity:.3}
+  @keyframes float{
+    0%,100%{transform:translate(0,0) scale(1)}
+    33%{transform:translate(40px,-30px) scale(1.08)}
+    66%{transform:translate(-30px,40px) scale(.95)}
+  }
+  .grid{
+    position:absolute;inset:0;
+    background-image:linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px),
+                     linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px);
+    background-size:40px 40px;
+    mask-image:radial-gradient(ellipse at 50% 30%,#000 30%,transparent 75%);
+  }
+
+  .wrap{position:relative;z-index:1;max-width:480px;margin:0 auto;padding:48px 16px 40px}
+
+  /* ---------- Header ---------- */
+  header{text-align:center;margin-bottom:28px}
+  .logo{
+    position:relative;width:104px;height:104px;margin:0 auto 22px;
+    border-radius:30px;background:var(--grad);
+    display:grid;place-items:center;
+    box-shadow:0 0 0 1px rgba(255,255,255,.15) inset,0 18px 50px -10px rgba(59,130,246,.7),0 0 80px -10px rgba(124,58,237,.6);
+    animation:pulse 3.5s ease-in-out infinite;
+  }
+  .logo::before{
+    content:"";position:absolute;inset:-6px;border-radius:36px;padding:2px;
+    background:conic-gradient(from 0deg,var(--a2),transparent 30%,var(--a1) 60%,transparent 80%,var(--a2));
+    -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    animation:spin 4s linear infinite;
+  }
+  .logo svg{width:60px;height:60px;filter:drop-shadow(0 4px 10px rgba(0,0,0,.35))}
+  @keyframes spin{to{transform:rotate(360deg)}}
+  @keyframes pulse{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+
+  h1{
+    font-size:38px;font-weight:800;letter-spacing:.06em;line-height:1.1;
+    background:linear-gradient(90deg,#fff,#c7d2fe 40%,var(--a2));
+    -webkit-background-clip:text;background-clip:text;color:transparent;
+  }
+  h1 span{background:var(--grad);-webkit-background-clip:text;background-clip:text}
+  .sub{margin-top:10px;color:var(--muted);font-size:14px}
+  .status{
+    display:inline-flex;align-items:center;gap:8px;margin-top:14px;
+    padding:6px 14px;border-radius:999px;font-size:12px;font-weight:600;
+    background:rgba(52,211,153,.1);color:var(--ok);border:1px solid rgba(52,211,153,.25);
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 0 rgba(52,211,153,.7);animation:ping 1.8s infinite}
+  @keyframes ping{70%{box-shadow:0 0 0 8px rgba(52,211,153,0)}100%{box-shadow:0 0 0 0 rgba(52,211,153,0)}}
+
+  /* ---------- Card ---------- */
+  .card{
+    background:var(--card);border:1px solid var(--card-border);border-radius:24px;
+    padding:22px 18px;margin-bottom:18px;
+    backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+    box-shadow:0 20px 50px -20px rgba(0,0,0,.6);
+  }
+  .card-title{
+    display:flex;align-items:center;gap:10px;margin-bottom:16px;
+    font-size:13px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#a5b4fc;
+  }
+  .card-title::before{content:"";width:4px;height:18px;border-radius:4px;background:var(--grad);box-shadow:0 0 12px var(--a2)}
+  .card-title .count{margin-left:auto;letter-spacing:0;font-size:12px;color:var(--muted);font-weight:500;text-transform:none}
+
+  .chips{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .chip{
+    position:relative;display:flex;align-items:center;justify-content:center;gap:8px;
+    min-height:52px;padding:10px 12px;border-radius:14px;cursor:pointer;
+    background:var(--chip);border:1px solid var(--chip-border);color:#dbe2ff;
+    font:600 14px/1.2 inherit;font-family:inherit;text-align:center;
+    transition:transform .15s,border-color .2s,background .2s,box-shadow .2s;
+  }
+  .chip:hover{border-color:rgba(124,150,255,.4);background:rgba(124,150,255,.08)}
+  .chip:active{transform:scale(.97)}
+  .chip .ic{
+    width:18px;height:18px;border-radius:50%;flex:none;
+    border:1.5px solid rgba(255,255,255,.25);display:grid;place-items:center;transition:.2s;
+  }
+  .chip .ic svg{width:10px;height:10px;opacity:0;transition:.2s}
+  .chip.active{
+    border-color:transparent;color:#fff;
+    background:linear-gradient(var(--bg),var(--bg)) padding-box,var(--grad) border-box;
+    border:1px solid transparent;
+    box-shadow:0 0 24px -6px rgba(34,211,238,.55);
+  }
+  .chip.active .ic{background:var(--grad);border-color:transparent}
+  .chip.active .ic svg{opacity:1}
+  .hint{margin-top:14px;text-align:center;font-size:12.5px;color:var(--muted)}
+
+  /* ---------- Input ---------- */
+  .field{position:relative}
+  .field svg.lead{position:absolute;left:16px;top:50%;transform:translateY(-50%);width:20px;height:20px;color:var(--muted)}
+  input{
+    width:100%;height:58px;padding:0 92px 0 48px;border-radius:16px;
+    background:rgba(0,0,0,.3);border:1px solid var(--chip-border);
+    color:var(--text);font:500 15px inherit;font-family:inherit;outline:none;transition:.2s;
+  }
+  input::placeholder{color:#5f678a}
+  input:focus{border-color:var(--a3);box-shadow:0 0 0 4px rgba(59,130,246,.18)}
+  .paste{
+    position:absolute;right:8px;top:50%;transform:translateY(-50%);
+    height:42px;padding:0 14px;border-radius:12px;border:1px solid var(--chip-border);
+    background:rgba(255,255,255,.06);color:#c7d2fe;font:600 13px inherit;font-family:inherit;cursor:pointer;
+  }
+  .paste:hover{background:rgba(255,255,255,.12)}
+
+  .btn{
+    position:relative;overflow:hidden;width:100%;height:60px;margin-top:14px;border:0;border-radius:16px;cursor:pointer;
+    background:var(--grad);background-size:200% 200%;animation:shift 6s ease infinite;
+    color:#fff;font:800 17px inherit;font-family:inherit;letter-spacing:.14em;
+    display:flex;align-items:center;justify-content:center;gap:10px;
+    box-shadow:0 14px 36px -10px rgba(59,130,246,.8);transition:transform .15s,opacity .2s;
+  }
+  .btn::after{
+    content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;
+    background:linear-gradient(90deg,transparent,rgba(255,255,255,.35),transparent);
+    transform:skewX(-20deg);animation:shine 3s infinite;
+  }
+  .btn:active{transform:scale(.98)}
+  .btn:disabled{opacity:.7;cursor:wait}
+  .btn svg{width:20px;height:20px}
+  @keyframes shift{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+  @keyframes shine{0%{left:-60%}60%,100%{left:130%}}
+  .spinner{width:20px;height:20px;border-radius:50%;border:3px solid rgba(255,255,255,.35);border-top-color:#fff;animation:spin .8s linear infinite}
+
+  /* ---------- Kết quả ---------- */
+  .result{display:none;margin-top:16px;padding:16px;border-radius:16px;font-size:14px;animation:in .3s ease}
+  .result.show{display:block}
+  .result.ok{background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.3)}
+  .result.err{background:rgba(248,113,113,.08);border:1px solid rgba(248,113,113,.3);color:#fecaca}
+  .result .label{font-weight:700;margin-bottom:8px;color:var(--ok)}
+  .result .link{display:flex;gap:8px;align-items:center}
+  .result a{flex:1;min-width:0;color:#a5f3fc;word-break:break-all;text-decoration:none}
+  .copy{flex:none;height:36px;padding:0 14px;border-radius:10px;border:0;background:var(--ok);color:#052e1f;font:700 13px inherit;font-family:inherit;cursor:pointer}
+  @keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ---------- Stats + footer ---------- */
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+  .stat{text-align:center;padding:14px 6px;border-radius:14px;background:var(--chip);border:1px solid var(--chip-border)}
+  .stat b{display:block;font-size:20px;font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .stat span{font-size:11.5px;color:var(--muted)}
+  footer{text-align:center;color:#5f678a;font-size:12px;margin-top:22px}
+
+  .toast{
+    position:fixed;left:50%;bottom:28px;transform:translate(-50%,30px);opacity:0;z-index:10;
+    padding:12px 18px;border-radius:12px;background:#111833;border:1px solid var(--card-border);
+    font-size:14px;transition:.3s;pointer-events:none;max-width:calc(100% - 32px);
+  }
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  @media (max-width:360px){ h1{font-size:30px} .chip{font-size:13px} }
+  @media (prefers-reduced-motion:reduce){ *{animation:none!important} }
+</style>
+</head>
+<body>
+  <div class="bg"><div class="grid"></div><div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div></div>
+
+  <main class="wrap">
+    <header>
+      <div class="logo" aria-hidden="true">
+        <!-- Avatar mới: tia sét lồng trong vòng tròn 24/7 -->
+        <svg viewBox="0 0 64 64" fill="none">
+          <circle cx="32" cy="32" r="26" stroke="#fff" stroke-opacity=".35" stroke-width="3" stroke-dasharray="4 5"/>
+          <path d="M32 6a26 26 0 0 1 26 26" stroke="#fff" stroke-width="3.5" stroke-linecap="round"/>
+          <path d="M58 32l-4-5m4 5l4-5" stroke="#fff" stroke-width="3" stroke-linecap="round"/>
+          <path d="M35 14 20 35h11l-3 15 16-22H33l2-14Z" fill="#fff"/>
+        </svg>
+      </div>
+      <h1>BYPASS <span>24/7</span></h1>
+      <p class="sub">Hệ thống vượt link tự động • Version 3.0</p>
+      <div class="status"><i class="dot"></i>Hoạt động 24/7</div>
+    </header>
+
+    <section class="card">
+      <div class="card-title">Trang hỗ trợ <span class="count" id="count">Chưa chọn</span></div>
+      <div class="chips" id="chips" role="radiogroup"></div>
+      <p class="hint">Chọn 1 trang bạn cần vượt link</p>
+    </section>
+
+    <section class="card">
+      <div class="card-title">Nhập link cần vượt</div>
+      <div class="field">
+        <svg class="lead" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 13a5 5 0 0 0 7.5.5l3-3a5 5 0 0 0-7-7l-1.7 1.7"/><path d="M14 11a5 5 0 0 0-7.5-.5l-3 3a5 5 0 0 0 7 7l1.7-1.7"/></svg>
+        <input id="url" type="url" inputmode="url" autocomplete="off" placeholder="Dán URL cần vượt (https://...)">
+        <button class="paste" id="paste" type="button">Dán</button>
+      </div>
+      <button class="btn" id="go" type="button">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg>
+        <span>VƯỢT LINK</span>
+      </button>
+      <div class="result" id="result"></div>
+    </section>
+
+    <section class="card">
+      <div class="stats">
+        <div class="stat"><b>9+</b><span>Trang hỗ trợ</span></div>
+        <div class="stat"><b>~3s</b><span>Tốc độ</span></div>
+        <div class="stat"><b>24/7</b><span>Online</span></div>
+      </div>
+    </section>
+
+    <footer>© 2026 BYPASS 24/7 • Made with ⚡</footer>
+  </main>
+
+  <div class="toast" id="toast"></div>
+
+<script>
+  // ====== CẤU HÌNH ======
+  // Điền URL API backend của bạn vào đây. API nhận POST {url} và trả JSON {result: "<link đích>"}.
+  const API_ENDPOINT = "";
+
+  const SITES = [
+    "Gtraffic.io","Link4m","Layma.net","Traffic4k.com","Site2s.com",
+    "Bbmkt.com","system.traffichub.vn","app.trafficviet.vn","Phienchoso.com"
+  ];
+
+  const $ = id => document.getElementById(id);
+  const check = '<svg viewBox="0 0 12 12" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.5 6.2 5 8.5l4.5-5"/></svg>';
+  let selected = null; // chỉ cho chọn 1 trang
+
+  SITES.forEach(name => {
+    const b = document.createElement("button");
+    b.type = "button"; b.className = "chip";
+    b.setAttribute("role", "radio");
+    b.setAttribute("aria-checked", "false");
+    b.innerHTML = `<span class="ic">${check}</span><span>${name}</span>`;
+    b.onclick = () => {
+      document.querySelectorAll(".chip.active").forEach(c => {
+        c.classList.remove("active"); c.setAttribute("aria-checked", "false");
+      });
+      b.classList.add("active"); b.setAttribute("aria-checked", "true");
+      selected = name;
+      $("count").textContent = `Đã chọn: ${name}`;
+    };
+    $("chips").appendChild(b);
+  });
+
+  function toast(msg){
+    const t = $("toast"); t.textContent = msg; t.classList.add("show");
+    clearTimeout(t._h); t._h = setTimeout(() => t.classList.remove("show"), 2200);
+  }
+
+  $("paste").onclick = async () => {
+    try { $("url").value = (await navigator.clipboard.readText()).trim(); toast("Đã dán link"); }
+    catch { toast("Không đọc được clipboard, hãy dán thủ công"); $("url").focus(); }
+  };
+
+  function showResult(ok, html){
+    const r = $("result");
+    r.className = "result show " + (ok ? "ok" : "err");
+    r.innerHTML = html;
+  }
+
+  $("go").onclick = async () => {
+    if (!selected) return showResult(false, "⚠️ Vui lòng chọn 1 trang hỗ trợ trước.");
+    const raw = $("url").value.trim();
+    let u;
+    try { u = new URL(raw); if (!/^https?:$/.test(u.protocol)) throw 0; }
+    catch { return showResult(false, "⚠️ Link không hợp lệ. Vui lòng nhập URL bắt đầu bằng http:// hoặc https://"); }
+
+    const btn = $("go");
+    btn.disabled = true;
+    btn.innerHTML = '<i class="spinner"></i><span>ĐANG XỬ LÝ...</span>';
+
+    try {
+      if (!API_ENDPOINT) throw new Error("Chưa cấu hình API_ENDPOINT trong mã nguồn.");
+      const res = await fetch(API_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url: u.href, site: selected })
+      });
+      const data = await res.json();
+      if (!res.ok || !data.result) throw new Error(data.error || "Không vượt được link này.");
+      const safe = String(data.result).replace(/[<>"]/g, "");
+      showResult(true, `<div class="label">✅ Thành công!</div>
+        <div class="link"><a href="${safe}" target="_blank" rel="noopener">${safe}</a>
+        <button class="copy" id="copy">Copy</button></div>`);
+      $("copy").onclick = () => navigator.clipboard.writeText(safe).then(() => toast("Đã copy link"));
+    } catch (e) {
+      showResult(false, "❌ " + e.message);
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg><span>VƯỢT LINK</span>';
+    }
+  };
+
+  $("url").addEventListener("keydown", e => { if (e.key === "Enter") $("go").click(); });
+</script>
+</body>
+</html>
